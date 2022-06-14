@@ -101,9 +101,9 @@ if __name__=='__main__':
     
     model = GraphRel(len(ds_tr.POS)+1, 5, 25, 
                      256, 2, 2, 0.5, 
-                     '2p').cuda()
+                     '2p')
     
     for s, inp_sent, inp_pos, dep_fw, dep_bw, ans_ne, ans_rel in tqdm(dl, ascii=True):
-        out = model(inp_sent.cuda(), inp_pos.cuda(), dep_fw.cuda(), dep_bw.cuda())
+        out = model(inp_sent, inp_pos, dep_fw, dep_bw)
         print([o.shape for o in out])
         
