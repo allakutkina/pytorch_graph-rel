@@ -124,7 +124,7 @@ if __name__=='__main__':
     NLP = spacy.load('en_core_web_lg')
     ds_tr, ds_vl, ds_ts = [DS(NLP, args.path, typ, args.max_len) for typ in ['train', 'val', 'test']]
     dl_tr, dl_vl, dl_ts = [T.utils.data.DataLoader(ds, batch_size=args.size_batch, 
-                                                   shuffle=(ds is ds_tr), num_workers=32, pin_memory=True) \
+                                                   shuffle=(ds is ds_tr), num_workers=8, pin_memory=True) \
                            for ds in [ds_tr, ds_vl, ds_ts]]
     
     log = {'ls_tr': [], 'f1_vl': [], 'f1_ts': []}
