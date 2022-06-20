@@ -95,9 +95,12 @@ class GraphRel(T.nn.Module):
     
 if __name__=='__main__':    
     NLP = spacy.load('en_core_web_lg')
-    ds_tr, ds_vl, ds_ts = [DS(NLP, 'nyt', typ, 120) for typ in ['train', 'val', 'test']]
+    types = json.load(open('./_data/cockpit_ontology_spert_prep_types8.0.json', 'r'))
+    ds_tr = DS(NLP, 'cockpit_ontology_spert_prep8.0_train', 'cockpit_ontology_spert_prep_types8.0', 300)
+    ds_vl = DS(NLP, 'cockpit_ontology_spert_prep8.0_val', 'cockpit_ontology_spert_prep_types8.0', 300)
+    ds_ts = DS(NLP, 'cockpit_ontology_spert_prep8.0_test', 'cockpit_ontology_spert_prep_types8.0', 300)
     dl = T.utils.data.DataLoader(ds_tr, batch_size=64, 
-                                 shuffle=True, num_workers=32, pin_memory=True)
+                                 shuffle=True, num_workers=16, pin_memory=True)
     
     model = GraphRel(len(ds_tr.POS)+1, 5, 25, 
                      256, 2, 2, 0.5, 

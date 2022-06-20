@@ -1,4 +1,4 @@
-
+import json
 from lib import *
 from dataset import *
 from model import *
@@ -10,7 +10,7 @@ def get_args():
     
     parser.add_argument("--max_len", default=120, type=int)
     parser.add_argument("--num_ne", default=5, type=int)
-    parser.add_argument("--num_rel", default=25, type=int)
+    parser.add_argument("--num_rel", default=15, type=int)
     
     parser.add_argument("--size_hid", default=256, type=int)
     parser.add_argument("--layer_rnn", default=2, type=int)
@@ -73,7 +73,7 @@ def eval_dl(model, dl):
         
         out_ne, out_rel = [T.argmax(out, dim=-1).data.cpu().numpy() for out in [out_ne, out_rel]]
         for o_ne, o_rel in zip(out_ne, out_rel):
-            l = len(dl.dataset.dat[I]['sentence'])+1
+            l = len(dl.dataset.dat[I]['tokens'])+1
             
             ne, pos = {}, -1
             for i in range(l):
@@ -122,11 +122,16 @@ if __name__=='__main__':
     print(args)
     
     NLP = spacy.load('en_core_web_lg')
-    ds_tr, ds_vl, ds_ts = [DS(NLP, args.path, typ, args.max_len) for typ in ['train', 'val', 'test']]
-    dl_tr, dl_vl, dl_ts = [T.utils.data.DataLoader(ds, batch_size=args.size_batch, 
-                                                   shuffle=(ds is ds_tr), num_workers=8, pin_memory=True) \
+    ds_tr = DS(NLP, 'cockpit_ontology_spert_prep8.0_train', 'cockpit_ontology_spert_prep_types8.0', args.max_len)
+    ds_vl = DS(NLP, 'cockpit_ontology_spert_prep8.0_val', 'cockpit_ontology_spert_prep_types8.0', args.max_len)
+    ds_ts = DS(NLP, 'cockpit_ontology_spert_prep8.0_test', 'cockpit_ontology_spert_prep_types8.0', args.max_len)
+
+#        [DS(NLP, args.path, typ, args.max_len) for typ in ['train', 'val', 'test']]
+
+    dl_tr, dl_vl, dl_ts = [T.utils.data.DataLoader(ds, batch_size=args.size_batch,
+                                                   shuffle=(ds is ds_tr), num_workers=16, pin_memory=True) \
                            for ds in [ds_tr, ds_vl, ds_ts]]
-    
+
     log = {'ls_tr': [], 'f1_vl': [], 'f1_ts': []}
     json.dump(log, open('%s/log.json'%(args.path_output), 'w'), indent=2)
     
