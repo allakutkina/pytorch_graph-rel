@@ -85,10 +85,10 @@ class DS(T.utils.data.Dataset):
 
 if __name__ == '__main__':
     NLP = spacy.load('en_core_web_lg')
-    types = json.load(open('./_data/cockpit_ontology_spert_prep_types8.0.json', 'r'))
-    ds_tr = DS(NLP, 'cockpit_ontology_spert_prep8.0_train', 'cockpit_ontology_spert_prep_types8.0', 120)
-    ds_vl = DS(NLP, 'cockpit_ontology_spert_prep8.0_val', 'cockpit_ontology_spert_prep_types8.0', 120)
-    ds_ts = DS(NLP, 'cockpit_ontology_spert_prep8.0_test', 'cockpit_ontology_spert_prep_types8.0', 120)
+#    types = json.load(open('./_data/types8.0.json', 'r'))
+    ds_tr = DS(NLP, 'train', 'types', 120)
+    ds_vl = DS(NLP, 'val', 'types', 120)
+    ds_ts = DS(NLP, 'test', 'types', 120)
 
     print(ds_tr)
 

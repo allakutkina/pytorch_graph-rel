@@ -122,9 +122,9 @@ if __name__=='__main__':
     print(args)
     
     NLP = spacy.load('en_core_web_lg')
-    ds_tr = DS(NLP, 'cockpit_ontology_spert_prep8.0_train', 'cockpit_ontology_spert_prep_types8.0', args.max_len)
-    ds_vl = DS(NLP, 'cockpit_ontology_spert_prep8.0_val', 'cockpit_ontology_spert_prep_types8.0', args.max_len)
-    ds_ts = DS(NLP, 'cockpit_ontology_spert_prep8.0_test', 'cockpit_ontology_spert_prep_types8.0', args.max_len)
+    ds_tr = DS(NLP, 'train', 'types', args.max_len)
+    ds_vl = DS(NLP, 'val', 'types', args.max_len)
+    ds_ts = DS(NLP, 'test', 'types', args.max_len)
 
 #        [DS(NLP, args.path, typ, args.max_len) for typ in ['train', 'val', 'test']]
 
